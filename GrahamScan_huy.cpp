@@ -37,8 +37,9 @@ int ccw(const Point& a, const Point& b, const Point& c) {
     return 0;                 // Thẳng hàng
 }
 
-Point* GrahamScan(Point Points[], int n) {
-    if (n < 3) return nullptr; // Không đủ điểm để tạo bờ lồi
+int GrahamScan(Point Points[], int n, Point out[]) {
+    if (n < 3) return 0; // Không đủ điểm để tạo bờ lồi
+
 
     int min_idx = 0;
     for(int i = 1; i < n; i++) {
@@ -47,7 +48,7 @@ Point* GrahamScan(Point Points[], int n) {
         }
     }
     swap(Points[0], Points[min_idx]);
-    Point O = Points[0]; // Bây giờ O chính là n[0]
+    Point O = Points[0];
 
     for(int i = 1; i < n; i++) {
         for(int j = i + 1; j < n; j++) {
@@ -57,26 +58,31 @@ Point* GrahamScan(Point Points[], int n) {
         }
     }
 
-    Point GrahamScan[n];
     int GrahamScanSize = 2;
-    GrahamScan[0] = Points[0];
-    GrahamScan[1] = Points[1];
+    out[0] = Points[0];
+    out[1] = Points[1];
     for(int i = 2; i < n; i++) {
-        while(GrahamScanSize > 1 && ccw(GrahamScan[GrahamScanSize - 2], GrahamScan[GrahamScanSize - 1], Points[i]) <= 0) {
+        while(GrahamScanSize > 1 && ccw(out[GrahamScanSize - 2], out[GrahamScanSize - 1], Points[i]) <= 0) {
             GrahamScanSize--;
         }
-        GrahamScan[GrahamScanSize++] = Points[i];
+        out[GrahamScanSize++] = Points[i];
     }
-    return GrahamScan;
+    return GrahamScanSize;
 }
-
 int main() {
     Point Points[] = {
-        {0, 0}, {1, 1}, {2, 2}, {3, 3},
-        {3, 0}, {0, 3}, {1, 2}, {2, 1}
+        Point(-5, 2), Point(-1, 3), Point(-1, 8), Point(9, 5), Point(6, 2), 
+        Point(9, 4), Point(12, 1), Point(9, -5), Point(5, -8), Point(5, -10),
+        Point(1, -9), Point(2, -3), Point(-1, -7), Point(-6, -8), Point(-7, -4)
     };
-    int n = sizeof(Points) / sizeof(Points[0]);
-    Point* res = GrahamScan(Points, n);
     
+    int n = sizeof(Points) / sizeof(Points[0]);
+
+    Point res[n];
+    int size = GrahamScan(Points, n, res);
+    cout << "Graham Scan Convex Hull:\n";
+    for (int i = 0; i < size; i++) {
+        cout << "(" << res[i].x << ", " << res[i].y << ")\n";
+    }
     return 0;
 }

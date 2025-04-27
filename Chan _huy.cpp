@@ -148,8 +148,14 @@ void Chan(Point Points[], int n) {
 
 int main() {
     Point Points[] = {
-        {0, 0}, {1, 1}, {2, 2}, {3, 3},
-        {3, 0}, {0, 3}, {1, 2}, {2, 1}
+            Point(1,25),   Point(14,1),   Point(25,0),   Point(17,12),
+            Point(18,6),   Point(14,7),   Point(3,9),    Point(23,0),
+            Point(8,9),    Point(6,16),   Point(21,19),  Point(2,16),
+            Point(17,12),  Point(14,12),  Point(11,18),  Point(18,12),
+            Point(14,22),  Point(9,2),    Point(4,7),    Point(4,13),
+            Point(21,5),   Point(1,7),    Point(9,1),    Point(7,12),
+            Point(2,21),   Point(24,6),   Point(16,21),  Point(5,19),
+            Point(18,11),  Point(20,18)
     };
     int n = sizeof(Points) / sizeof(Points[0]);
     Chan(Points, n);

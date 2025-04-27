@@ -8,6 +8,12 @@ struct Point {
     int x, y;
     bool operator<(const Point& p) const {
         return x < p.x || (x == p.x && y < p.y);
+    };
+    bool operator==(const Point& other) const {
+        return x == other.x && y == other.y;
+    }
+    bool operator!=(const Point& other) const {
+        return x != other.x && y != other.y;
     }
 };
 
@@ -58,18 +64,21 @@ double min_distance(const Point hull[], int m) {
     return dmin;
 }
 
-// liệt kê các điểm nằm trong hoặc trên hull
+// liệt kê các điểm nằm trong
 // trả về số điểm inside[]
 int points_inside_hull(Point pts[], int n, Point hull[], int m, Point inside[]) {
     int cnt = 0;
-    for (int i = 0; i < n; ++i) {
-        bool in = true;
+    for(int i = 0; i < n; ++i) {
+        bool isinside = true;
         for (int j = 0; j < m; ++j) {
-            if (cross(hull[j], hull[(j+1)%m], pts[i]) < 0) {
-                in = false; break;
+            if (pts[i] == hull[j]) {
+                isinside = false;
+                break;
             }
         }
-        if (in) inside[cnt++] = pts[i];
+        if (isinside) {
+            inside[cnt++] = pts[i];
+        }
     }
     return cnt;
 }
@@ -107,7 +116,7 @@ int main() {
     cout << "Area of convex hull: " << A << "\n";
     cout << "Minimum edge length on hull: " << me << "\n";
 
-    // điểm inside
+    //inside
     Point inside[MAX_N];
     int ni = points_inside_hull(pts, n, hull, m, inside);
 
@@ -116,8 +125,8 @@ int main() {
     cout << "Minimum distance between inside points and hull points: " << mi << "\n";
 
     // in danh sách inside
-    cout << "Points inside or on hull:\n";
-    for (int i = 0; i < ni; ++i)
+    cout << "Points inside hull:\n";
+    for(int i = 0; i < ni; ++i)
         cout << "(" << inside[i].x << "," << inside[i].y << ")\n";
 
     // in tổng kết
